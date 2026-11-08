@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Send, CheckCircle2, Shield, AlertCircle, Sparkles, User, Mail, Phone, MapPin } from 'lucide-react'
+import { Send, CheckCircle2, Shield, AlertCircle, Sparkles, User, Mail, Phone, MapPin, Wrench } from 'lucide-react'
 import { SITE_CONFIG } from '../config/site'
 import { trackWhopEvent } from '../lib/whop-tracking'
 import { submitLeadServerFn } from '../lib/server-api'
@@ -115,230 +115,243 @@ export const EstimateForm: React.FC<EstimateFormProps> = ({ onSuccess }) => {
   }
 
   return (
-    <div id="estimate-form" className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl relative text-white">
+    <div id="estimate-form" className="relative rounded-3xl bg-white border-2 border-slate-200 p-8 sm:p-12 shadow-2xl text-slate-900 overflow-hidden">
+      
+      {/* Decorative top header line */}
+      <div className="absolute top-0 left-0 w-full h-2.5 bg-gradient-to-r from-blue-700 via-amber-500 to-indigo-600" />
+
+      {/* Header */}
+      <div className="max-w-2xl mx-auto text-center mb-10">
+        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-100 border border-blue-200 text-blue-800 text-xs font-bold uppercase tracking-wider mb-3">
+          <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+          <span>Wired to Whop Leads API (POST /api/v1/leads)</span>
+        </div>
+        <h3 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+          Request An On-Site Roof Estimate
+        </h3>
+        <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed">
+          Fill out your project specifications. Our certified roofing estimators will review your property and dispatch a drone assessment crew within 24 hours.
+        </p>
+      </div>
+
       {submittedLead ? (
-        <div className="text-center py-8 space-y-5 animate-fadeIn">
-          <div className="w-16 h-16 rounded-full bg-emerald-500/10 border-2 border-emerald-500/40 flex items-center justify-center text-emerald-400 mx-auto">
+        <div className="p-8 rounded-3xl bg-emerald-50 border-2 border-emerald-300 text-center space-y-4 animate-fadeIn">
+          <div className="w-16 h-16 rounded-full bg-emerald-100 border-2 border-emerald-400 flex items-center justify-center text-emerald-600 mx-auto">
             <CheckCircle2 className="w-9 h-9" />
           </div>
-
-          <div>
-            <span className="text-xs font-mono uppercase text-emerald-400 tracking-wider">Whop Lead Recorded</span>
-            <h3 className="text-2xl font-black text-white mt-1">Estimate Request Dispatched!</h3>
-            <p className="text-sm text-slate-300 mt-2 max-w-md mx-auto">
-              Your inquiry has landed as an official Lead on Whop Account <span className="font-mono text-amber-400">{SITE_CONFIG.whopAccountId}</span>.
-            </p>
-          </div>
-
-          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 max-w-md mx-auto text-left text-xs font-mono space-y-2 text-slate-300">
-            <div className="flex justify-between">
-              <span className="text-slate-500">Lead ID:</span>
-              <span className="text-amber-400 font-bold">{submittedLead.id}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">Target Account:</span>
-              <span>{SITE_CONFIG.whopAccountId}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">Customer:</span>
-              <span>{formData.name} ({formData.phone})</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">Service:</span>
-              <span className="text-white">{formData.serviceType}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">Pixel Event:</span>
-              <span className="text-emerald-400">estimate_requested (Fired)</span>
-            </div>
-          </div>
-
-          <p className="text-xs text-slate-400">
-            A Master Roofing Estimator will contact you within 2 business hours with an aerial measurement.
+          <h4 className="text-2xl font-black text-slate-900">Whop Lead Successfully Recorded!</h4>
+          <p className="text-sm text-slate-600 max-w-md mx-auto">
+            Your quote request has landed in our Whop CRM pipeline. A dedicated project manager has been assigned.
           </p>
+
+          <div className="bg-white p-5 rounded-2xl border border-emerald-200 max-w-md mx-auto text-left text-xs space-y-2 font-mono shadow-sm">
+            <div className="flex justify-between border-b pb-1.5">
+              <span className="text-slate-500 font-sans">Lead ID:</span>
+              <span className="font-bold text-emerald-700">{submittedLead.id}</span>
+            </div>
+            <div className="flex justify-between border-b pb-1.5">
+              <span className="text-slate-500 font-sans">Whop Business Account:</span>
+              <span className="font-bold text-blue-700">{SITE_CONFIG.whopAccountId}</span>
+            </div>
+            <div className="flex justify-between border-b pb-1.5">
+              <span className="text-slate-500 font-sans">Customer:</span>
+              <span className="text-slate-900">{formData.name}</span>
+            </div>
+            <div className="flex justify-between border-b pb-1.5">
+              <span className="text-slate-500 font-sans">Service:</span>
+              <span className="text-slate-900">{formData.serviceType}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-500 font-sans">Pixel Event:</span>
+              <span className="text-amber-600 font-bold">estimate_requested (Fired)</span>
+            </div>
+          </div>
 
           <button
             onClick={() => setSubmittedLead(null)}
-            className="text-xs text-amber-400 hover:underline pt-2 inline-block font-semibold"
+            className="mt-4 px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-md"
           >
-            Submit Another Quote Request
+            Submit Another Request
           </button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="border-b border-slate-800 pb-5">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold mb-2">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Whop Leads API Integration</span>
-            </div>
-            <h3 className="text-2xl font-black text-white">Request An On-Site Roof Estimate</h3>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              Complete the form below. Quote inquiries automatically record directly into Whop's CRM Leads pipeline.
-            </p>
-          </div>
-
+        <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto">
           {error && (
-            <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2">
+            <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 gap-5">
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1.5">Full Name *</label>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Full Name *
+              </label>
               <div className="relative">
-                <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   required
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="e.g. Johnathan Miller"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400"
+                  placeholder="e.g. John Miller"
+                  className="w-full pl-10 pr-3 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1.5">Email Address *</label>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Email Address *
+              </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="email"
                   required
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="e.g. jmiller@example.com"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400"
+                  placeholder="e.g. john@example.com"
+                  className="w-full pl-10 pr-3 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition"
                 />
               </div>
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-3 gap-5">
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1.5">Phone Number *</label>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Phone Number *
+              </label>
               <div className="relative">
-                <Phone className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="tel"
                   required
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="e.g. (512) 555-0199"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400"
+                  placeholder="(512) 555-0192"
+                  className="w-full pl-10 pr-3 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition"
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1.5">Zip Code *</label>
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Property Street Address *
+              </label>
               <div className="relative">
-                <MapPin className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                <MapPin className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   required
-                  name="zipCode"
-                  maxLength={5}
-                  value={formData.zipCode}
+                  name="address"
+                  value={formData.address}
                   onChange={handleChange}
-                  placeholder="e.g. 78701"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400"
+                  placeholder="1234 Texas Oak Blvd, Austin, TX"
+                  className="w-full pl-10 pr-3 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition"
                 />
               </div>
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-slate-300 mb-1.5">Property Street Address *</label>
-            <input
-              type="text"
-              required
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              placeholder="e.g. 4820 Barton Springs Rd, Austin, TX"
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400"
-            />
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-3 gap-5">
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1.5">Service Requested</label>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Service Type
+              </label>
               <select
                 name="serviceType"
                 value={formData.serviceType}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm focus:outline-none focus:border-amber-400"
+                className="w-full px-3 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition"
               >
-                <option value="Full Roof Replacement">Full Roof Replacement ($10k - $30k+)</option>
-                <option value="Storm & Leak Repair">Storm Damage & Leak Repair</option>
-                <option value="21-Point Inspection ($149)">21-Point Drone Inspection ($149)</option>
-                <option value="Flat-Rate Tune-Up ($399)">Flat-Rate Tune-Up ($399)</option>
-                <option value="Commercial Roof / TPO">Commercial Flat Roof / TPO</option>
+                <option value="Full Roof Replacement">Full Roof Replacement</option>
+                <option value="Storm & Hail Damage Repair">Storm & Hail Damage Repair</option>
+                <option value="21-Point Drone Inspection ($149)">21-Point Drone Inspection ($149)</option>
+                <option value="Flat-Rate Roof Guard ($399)">Flat-Rate Roof Guard ($399)</option>
+                <option value="Commercial Low-Slope Roofing">Commercial Low-Slope Roofing</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1.5">Current Roof Material</label>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Preferred Roof Material
+              </label>
               <select
                 name="roofMaterial"
                 value={formData.roofMaterial}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm focus:outline-none focus:border-amber-400"
+                className="w-full px-3 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition"
               >
-                <option value="Architectural Shingle">Architectural Asphalt Shingles</option>
+                <option value="GAF Architectural Shingle">GAF Architectural Shingle</option>
                 <option value="Standing Seam Metal">Standing Seam Metal</option>
-                <option value="Clay / Concrete Tile">Spanish Clay or Concrete Tile</option>
-                <option value="Flat / Modified Bitumen">Flat / Modified Bitumen</option>
-                <option value="Not Sure">Not Sure / Needs Inspection</option>
+                <option value="Spanish Terracotta Tile">Spanish Terracotta Tile</option>
+                <option value="Solar PV Shingles">Solar PV Shingles</option>
+                <option value="Recommend Best Material">Recommend Best Material</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Insurance Claim Status
+              </label>
+              <select
+                name="insuranceClaim"
+                value={formData.insuranceClaim}
+                onChange={handleChange}
+                className="w-full px-3 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition"
+              >
+                <option value="Not Sure / Needs Inspection">Not Sure / Needs Inspection</option>
+                <option value="Claim Already Filed">Claim Already Filed</option>
+                <option value="Approved, Need Contractor">Approved, Need Contractor</option>
+                <option value="Private Out-Of-Pocket">Private Out-Of-Pocket</option>
               </select>
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-300 mb-1.5">Project Notes or Details</label>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              Project Details or Known Issues (Optional)
+            </label>
             <textarea
               name="notes"
               rows={3}
               value={formData.notes}
               onChange={handleChange}
-              placeholder="Tell us about existing leaks, storm dates, insurance claims, or timeline..."
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400"
+              placeholder="e.g. Hail storm last month, noticeable water spot near living room chimney..."
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition"
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-base shadow-xl shadow-amber-500/20 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
-          >
-            {loading ? (
-              <span className="flex items-center gap-2">
-                <span className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
-                <span>Recording Lead on Whop...</span>
-              </span>
-            ) : (
-              <>
-                <Send className="w-4 h-4" />
-                <span>Submit Lead Request (Fires whop.track)</span>
-              </>
-            )}
-          </button>
+          <div className="pt-2">
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-900 via-indigo-900 to-blue-950 hover:from-blue-800 hover:to-indigo-800 text-white font-black text-base shadow-xl shadow-blue-900/25 flex items-center justify-center gap-2 transition transform hover:-translate-y-0.5 disabled:opacity-50"
+            >
+              {loading ? (
+                <span>Submitting to Whop Leads API...</span>
+              ) : (
+                <>
+                  <Send className="w-5 h-5 text-amber-400" />
+                  <span>Submit Estimate Request via Whop API</span>
+                </>
+              )}
+            </button>
+          </div>
 
-          <div className="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-800">
-            <span className="flex items-center gap-1.5">
-              <Shield className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Whop Leads API v1 Secured</span>
-            </span>
-            <span>No Obligation Free Assessment</span>
+          <div className="flex items-center justify-center gap-2 text-xs text-slate-500 pt-1">
+            <Shield className="w-4 h-4 text-emerald-600" />
+            <span>Encrypted transmission • Submits directly to Whop Business ID: {SITE_CONFIG.whopAccountId}</span>
           </div>
         </form>
       )}
+
     </div>
   )
 }

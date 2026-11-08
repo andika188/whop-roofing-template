@@ -45,7 +45,7 @@ export const SITE_CONFIG: SiteConfig = {
   licenseNumber: "TX-RCL #849204-B (Fully Licensed & Insured)",
   whopAccountId: "biz_PfW57PCwvf6TLe",
   appId: "app_2iZeKeMUoqecwl",
-  liveUrl: "https://apexroofing-usa.whop.site",
+  liveUrl: "https://apexroofing-usa.whop.app",
   plans: {
     inspection: {
       id: "plan_rQg5c6wN0kWqx",

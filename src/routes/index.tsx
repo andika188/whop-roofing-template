@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Header } from '../components/Header'
 import { Hero } from '../components/Hero'
 import { TrustBadges } from '../components/TrustBadges'
+import { RoofVisualizer3D } from '../components/RoofVisualizer3D'
 import { Services } from '../components/Services'
 import { PricingSection } from '../components/PricingSection'
 import { FinancingCallout } from '../components/FinancingCallout'
@@ -34,7 +35,8 @@ function RoofingWebsite() {
     trackWhopEvent('page_viewed', {
       page: 'home',
       vertical: 'high_ticket_roofing',
-      whop_payments: 'enabled'
+      whop_payments: 'enabled',
+      features: ['3d_webgl_visualizer', 'leads_api', 'setup_intent', 'invoices_api']
     })
   }, [])
 
@@ -51,7 +53,10 @@ function RoofingWebsite() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-amber-500 selection:text-slate-950" style={{ fontFamily: "'Inter Display', ui-sans-serif, system-ui, sans-serif" }}>
+    <div 
+      className="min-h-screen bg-white text-slate-900 selection:bg-amber-500 selection:text-slate-950 font-sans" 
+      style={{ fontFamily: "'Inter Display', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}
+    >
       <style>{FONT_FACES}</style>
 
       {/* 1. Header Navigation */}
@@ -67,43 +72,49 @@ function RoofingWebsite() {
         onOpenEstimate={handleScrollToEstimate}
       />
 
-      {/* 3. Trust & Contractor Credentials Badges */}
+      {/* 3. Authoritative Trust & Contractor Credentials Badges */}
       <TrustBadges />
 
-      {/* 4. Roofing Services */}
+      {/* 4. Interactive WebGL 3D Roof Visualizer & Material Configurator */}
+      <RoofVisualizer3D
+        onOpenCheckout={handleOpenCheckout}
+        onOpenEstimate={handleScrollToEstimate}
+      />
+
+      {/* 5. Roofing Services Grid */}
       <Services
         onOpenCheckout={handleOpenCheckout}
         onOpenEstimate={handleScrollToEstimate}
       />
 
-      {/* 5. Upfront Plans & Deposit Lock Section */}
+      {/* 6. Upfront Plans & Deposit Lock Section */}
       <PricingSection
         onOpenCheckout={handleOpenCheckout}
         onOpenInvoiceDemo={() => setInvoiceModalOpen(true)}
       />
 
-      {/* 6. Financing Callout (Klarna, Splitit, Afterpay via Whop) */}
+      {/* 7. Financing Callout (0% APR, Klarna, Splitit, Afterpay via Whop) */}
       <FinancingCallout
         onOpenCheckout={handleOpenCheckout}
         onOpenEstimate={handleScrollToEstimate}
       />
 
-      {/* 7. Central Texas Service Area & Zip Code Checker */}
+      {/* 8. Central Texas Service Area & Zip Code Checker */}
       <ServiceArea
         onOpenEstimate={handleScrollToEstimate}
       />
 
-      {/* 8. Verified Homeowner Reviews */}
+      {/* 9. Verified Homeowner Reviews */}
       <Reviews />
 
-      {/* 9. Estimate Request Form (Wired to Whop Leads API) */}
-      <section className="py-20 bg-slate-950 relative border-t border-slate-800">
+      {/* 10. Estimate Request Form (Wired to Whop Leads API) */}
+      <section className="py-24 bg-gradient-to-b from-slate-50 via-slate-100 to-slate-50 relative border-t border-slate-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <EstimateForm />
         </div>
       </section>
 
-      {/* 10. Footer */}
+      {/* 11. Footer */}
       <Footer
         onOpenCheckout={handleOpenCheckout}
         onOpenEstimate={handleScrollToEstimate}
