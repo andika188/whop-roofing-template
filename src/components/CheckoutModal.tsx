@@ -204,50 +204,51 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 {/* Embedded Whop Elements React Framework */}
                 {whopElementsInstance ? (
                   <WhopElements elements={whopElementsInstance}>
-                    <div className="space-y-4">
-                      {checkoutMode === 'payment_element' ? (
-                        <Payments
-                          accountId={SITE_CONFIG.whopAccountId}
-                          currency="usd"
-                          amount={plan.price * 100}
-                          fallback={
-                            <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-400 text-center">
-                              Loading Whop Hosted Elements...
-                            </div>
-                          }
-                        >
-                          <div className="space-y-3">
-                            <div>
-                              <label className="block text-xs font-semibold text-slate-400 mb-1">Buyer Email</label>
-                              <EmailElement className="w-full" />
-                            </div>
-
-                            <div>
-                              <label className="block text-xs font-semibold text-slate-400 mb-1">Payment Method & Financing</label>
-                              <PaymentElement className="w-full" />
-                            </div>
-
-                            {/* Required Whop Branding Element */}
-                            <div className="pt-2">
-                              <BrandingElement className="w-full" />
-                            </div>
-                          </div>
-                        </Payments>
-                      ) : (
-                        <Checkout
-                          plan={plan.id}
-                          fallback={
-                            <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-400 text-center">
-                              Loading Whop Checkout...
-                            </div>
-                          }
-                        >
-                          <div className="space-y-3">
-                            <ExpressCheckoutElement className="w-full" />
-                            <CheckoutElement className="w-full" />
-                          </div>
+                    <div className="space-y-5">
+                      {/* 1. Express Checkout Element (Apple Pay / Google Pay) */}
+                      <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                        <div className="flex items-center justify-between text-xs text-slate-400">
+                          <span className="font-semibold text-white flex items-center gap-1.5">
+                            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                            <span>Express 1-Click Checkout</span>
+                          </span>
+                          <span className="font-mono text-[10px] text-amber-400">ExpressCheckoutElement</span>
+                        </div>
+                        <Checkout plan={plan.id}>
+                          <ExpressCheckoutElement className="w-full" />
                         </Checkout>
-                      )}
+                      </div>
+
+                      {/* 2. Payment Element with Financing (Klarna, Splitit, Cards) & BrandingElement */}
+                      <Payments
+                        accountId={SITE_CONFIG.whopAccountId}
+                        currency="usd"
+                        amount={plan.price * 100}
+                        fallback={
+                          <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-400 text-center">
+                            Loading Whop Hosted Elements...
+                          </div>
+                        }
+                      >
+                        <div className="space-y-3">
+                          <div>
+                            <label className="block text-xs font-semibold text-slate-400 mb-1">Buyer Email</label>
+                            <EmailElement className="w-full" />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-semibold text-slate-400 mb-1">
+                              Payment Method & Financing (Cards, Klarna, Splitit)
+                            </label>
+                            <PaymentElement className="w-full" />
+                          </div>
+
+                          {/* Required Whop Branding Element */}
+                          <div className="pt-2">
+                            <BrandingElement className="w-full" />
+                          </div>
+                        </div>
+                      </Payments>
                     </div>
                   </WhopElements>
                 ) : (
